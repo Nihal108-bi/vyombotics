@@ -1,4 +1,4 @@
-import { Briefcase, Code2, ExternalLink, Star, Users } from 'lucide-react';
+import { Code2, ExternalLink, Star, Users } from 'lucide-react';
 import { teachers, type Teacher } from '../data/teachers.ts';
 
 const colorMap: Record<string, { ring: string; text: string; badge: string; bg: string }> = {
@@ -27,12 +27,15 @@ function TeacherCard({ teacher, featured = false }: { teacher: Teacher; featured
     >
       {/* Avatar */}
       <div className={`flex-shrink-0 ${featured ? '' : 'flex flex-col items-center mb-4'}`}>
-        <div className={`relative ${featured ? 'w-28 h-28' : 'w-20 h-20'}`}>
+        <div className={`relative ${featured ? 'w-32 h-32' : 'w-24 h-24'}`}>
           <img
             src={teacher.avatar}
             alt={teacher.name}
-            className={`w-full h-full rounded-full ring-3 ${colors.ring} object-cover`}
-            style={{ boxShadow: `0 0 20px ${teacher.badgeColor === 'purple' ? 'rgba(168,85,247,0.4)' : teacher.badgeColor === 'blue' ? 'rgba(59,130,246,0.4)' : 'rgba(255,255,255,0.1)'}` }}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.name)}&background=2563eb&color=fff&size=128&bold=true`;
+            }}
+            className={`w-full h-full rounded-full ring-3 ${colors.ring} object-cover object-top transition-transform duration-300 hover:scale-105`}
+            style={{ boxShadow: `0 0 20px ${teacher.badgeColor === 'purple' ? 'rgba(168,85,247,0.4)' : teacher.badgeColor === 'blue' ? 'rgba(59,130,246,0.4)' : teacher.badgeColor === 'cyan' ? 'rgba(6,182,212,0.4)' : teacher.badgeColor === 'green' ? 'rgba(16,185,129,0.4)' : teacher.badgeColor === 'pink' ? 'rgba(236,72,153,0.4)' : teacher.badgeColor === 'orange' ? 'rgba(249,115,22,0.4)' : teacher.badgeColor === 'violet' ? 'rgba(139,92,246,0.4)' : 'rgba(255,255,255,0.1)'}` }}
           />
           {featured && (
             <div className="absolute -top-2 -right-2 w-7 h-7 bg-yellow-500 rounded-full flex items-center justify-center">
@@ -71,17 +74,6 @@ function TeacherCard({ teacher, featured = false }: { teacher: Teacher; featured
 
         {/* Actions */}
         <div className={`flex items-center gap-3 ${featured ? '' : 'justify-center'}`}>
-          {teacher.linkedin && (
-            <a
-              href={teacher.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 glass rounded-lg hover:border-blue-500/50 text-slate-400 hover:text-blue-400 transition-all duration-200"
-              aria-label="LinkedIn"
-            >
-              <Briefcase className="w-4 h-4" />
-            </a>
-          )}
           {teacher.github && (
             <a
               href={teacher.github}
@@ -93,10 +85,17 @@ function TeacherCard({ teacher, featured = false }: { teacher: Teacher; featured
               <Code2 className="w-4 h-4" />
             </a>
           )}
-          <button className={`btn-glow flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold border transition-all duration-300 ${colors.badge} hover:opacity-90`}>
-            <ExternalLink className="w-3.5 h-3.5" />
-            View Profile
-          </button>
+          {teacher.linkedin && (
+            <a
+              href={teacher.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`btn-glow flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold border transition-all duration-300 ${colors.badge} hover:opacity-90`}
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              View Profile
+            </a>
+          )}
         </div>
       </div>
     </div>

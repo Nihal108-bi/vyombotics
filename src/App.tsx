@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Stats from './components/Stats';
 import Courses from './components/Courses';
+import WatchAndLearn from './components/WatchAndLearn';
 import Teachers from './components/Teachers';
 import WhyVyombotics from './components/WhyVyombotics';
 import Testimonials from './components/Testimonials';
@@ -17,6 +18,7 @@ export default function App() {
         <Hero />
         <Stats />
         <Courses />
+        <WatchAndLearn />
         <Teachers />
         <WhyVyombotics />
         <Testimonials />
