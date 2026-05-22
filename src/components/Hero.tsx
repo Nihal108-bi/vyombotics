@@ -9,12 +9,25 @@ const floatingIcons = [
   { Icon: Globe, style: 'top-[45%] right-[4%]', delay: '2.5s', color: 'text-cyan-300' },
 ];
 
+// Fallback Unsplash images for files that don't have a .jpg version
+const fallbacks: Record<string, string> = {
+  '/images/gallery/project_explaination_by_student.jpg':
+    'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=300&h=200&fit=crop',
+  '/images/gallery/About.jpg':
+    'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=300&h=200&fit=crop',
+};
+
 const galleryImages = [
-  { src: '/images/gallary/Stud_group_img.jpg', label: 'Student Group' },
-  { src: '/images/gallary/student_group_img.jpg', label: 'Learning Together' },
-  { src: '/images/gallary/boy.jpg', label: 'Future Innovator' },
-  { src: '/images/gallary/boy_with_project.jpg', label: 'Project Builder' },
+  { src: '/images/gallery/Stud_group_img.jpg',                  label: '🎓 Students Learning' },
+  { src: '/images/gallery/student_group_img.jpg',               label: '👥 Student Group' },
+  { src: '/images/gallery/project_explaination_by_student.jpg', label: '🎤 Project Presentation' },
+  { src: '/images/gallery/About.jpg',                           label: '🏫 About Vyombotics' },
+  { src: '/images/gallery/boy.jpg',                             label: '🚀 Future Innovator' },
+  { src: '/images/gallery/boy_with_project.jpg',                label: '🤖 Project Builder' },
 ];
+
+// Triple the array so translateX(-33.33%) = exactly one set width → seamless loop
+const allGalleryImages = [...galleryImages, ...galleryImages, ...galleryImages];
 
 export default function Hero() {
   return (
@@ -93,32 +106,55 @@ export default function Hero() {
           </button>
         </div>
 
-        {/* Gallery Strip */}
+        {/* ── Gallery Strip ── */}
         <div className="mt-14">
           <p className="text-center text-white/60 text-xs tracking-widest uppercase mb-5">
             Real Students. Real Projects. Real Impact. 🚀
           </p>
-          <div className="marquee-container gallery-mask overflow-hidden">
+
+          {/*
+            marquee-wrapper: hover target that pauses the animation via CSS
+            overflow-hidden: clips the moving track to the container width
+            mask: fades the left/right edges so the scroll looks seamless
+          */}
+          <div
+            className="marquee-wrapper overflow-hidden w-full"
+            style={{
+              maskImage:
+                'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
+              WebkitMaskImage:
+                'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
+            }}
+          >
+            {/*
+              animate-marquee: the scrolling track
+              w-max: exactly as wide as all cards combined
+              Each card slot = card width + 16px marginRight
+              translateX(-33.33%) = exactly one set of 6 cards → perfect loop
+            */}
             <div className="animate-marquee flex" style={{ width: 'max-content' }}>
-              {[...galleryImages, ...galleryImages].map((img, i) => (
+              {allGalleryImages.map((img, i) => (
                 <div
                   key={i}
                   className="group relative flex-shrink-0 rounded-xl overflow-hidden border border-white/10 hover:border-blue-500/50 hover:shadow-[0_0_18px_rgba(59,130,246,0.35)] transition-all duration-300"
-                  style={{ width: '280px', height: '180px', marginRight: '16px' }}
+                  style={{ width: '260px', height: '200px', marginRight: '16px' }}
                 >
                   <img
                     src={img.src}
                     alt={img.label}
-                    className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:brightness-110"
+                    className="w-full h-full object-cover object-center transition-all duration-300 group-hover:scale-105 group-hover:brightness-110"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src =
-                        'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=280&h=180&fit=crop';
+                      const target = e.target as HTMLImageElement;
+                      target.onerror = null; // prevent infinite loop
+                      target.src =
+                        fallbacks[img.src] ??
+                        'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop';
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
-                  <span className="absolute bottom-2 left-3 text-white text-xs font-medium tracking-wide">
-                    {img.label}
-                  </span>
+                  {/* Label overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-3 py-2">
+                    <p className="text-white text-sm font-semibold">{img.label}</p>
+                  </div>
                 </div>
               ))}
             </div>

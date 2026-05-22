@@ -76,7 +76,7 @@ export default function WatchAndLearn() {
                 See our students in action — building, learning, presenting.
               </p>
               <video
-                src="/images/gallary/project_explaination_by_student.mp4"
+                src="/images/gallery/project_explaination_by_student.mp4"
                 controls
                 className="w-full rounded-2xl border border-white/10"
                 style={{ boxShadow: '0 0 30px rgba(59,130,246,0.2)' }}
