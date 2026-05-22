@@ -1,4 +1,5 @@
-import { Code2, ExternalLink, Star, Users } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Code2, ExternalLink, Star, Users, ChevronLeft, ChevronRight, Crown } from 'lucide-react';
 import { teachers, type Teacher } from '../data/teachers.ts';
 
 const colorMap: Record<string, { ring: string; text: string; badge: string; bg: string }> = {
@@ -11,33 +12,60 @@ const colorMap: Record<string, { ring: string; text: string; badge: string; bg: 
   violet: { ring: 'ring-violet-500', text: 'text-violet-300', badge: 'bg-violet-500/20 text-violet-200 border-violet-500/40', bg: 'bg-violet-500/10' },
 };
 
-function TeacherCard({ teacher, featured = false }: { teacher: Teacher; featured?: boolean }) {
+function glowColor(badgeColor: string) {
+  const map: Record<string, string> = {
+    purple: 'rgba(168,85,247,0.45)',
+    blue:   'rgba(59,130,246,0.45)',
+    cyan:   'rgba(6,182,212,0.45)',
+    green:  'rgba(16,185,129,0.45)',
+    pink:   'rgba(236,72,153,0.45)',
+    orange: 'rgba(249,115,22,0.45)',
+    violet: 'rgba(139,92,246,0.45)',
+  };
+  return map[badgeColor] ?? 'rgba(255,255,255,0.1)';
+}
+
+function TeacherCard({ teacher, cardWidth }: { teacher: Teacher; cardWidth: number }) {
   const colors = colorMap[teacher.badgeColor] || colorMap.blue;
+  const isFeatured = teacher.featured;
 
   return (
     <div
-      className={`card-hover glass rounded-2xl overflow-hidden flex ${
-        featured ? 'flex-row items-center gap-8 p-8' : 'flex-col p-6'
-      }`}
-      style={featured ? {
-        background: 'rgba(109, 40, 217, 0.08)',
-        border: '1px solid rgba(168, 85, 247, 0.3)',
-        boxShadow: '0 0 40px rgba(168, 85, 247, 0.15), 0 0 80px rgba(168, 85, 247, 0.05)',
-      } : {}}
+      className="flex-shrink-0 rounded-2xl p-6 flex flex-col card-3d-tilt"
+      style={{
+        width: `${cardWidth}px`,
+        minWidth: `${cardWidth}px`,
+        background: isFeatured ? 'rgba(109,40,217,0.08)' : 'rgba(255,255,255,0.05)',
+        border: isFeatured ? '1px solid rgba(168,85,247,0.4)' : '1px solid rgba(255,255,255,0.1)',
+        boxShadow: isFeatured
+          ? '0 0 40px rgba(168,85,247,0.2), 0 0 80px rgba(168,85,247,0.05)'
+          : undefined,
+        backdropFilter: 'blur(12px)',
+      }}
     >
+      {/* Crown badge for featured */}
+      {isFeatured && (
+        <div className="flex items-center justify-center mb-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-yellow-500/15 border border-yellow-500/40">
+            <Crown className="w-4 h-4 text-yellow-400" />
+            <span className="text-yellow-300 text-xs font-bold tracking-wide">Academic Head</span>
+          </div>
+        </div>
+      )}
+
       {/* Avatar */}
-      <div className={`flex-shrink-0 ${featured ? '' : 'flex flex-col items-center mb-4'}`}>
-        <div className={`relative ${featured ? 'w-32 h-32' : 'w-24 h-24'}`}>
+      <div className="flex flex-col items-center mb-4">
+        <div className="relative w-24 h-24">
           <img
             src={teacher.avatar}
             alt={teacher.name}
             onError={(e) => {
               (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.name)}&background=2563eb&color=fff&size=128&bold=true`;
             }}
-            className={`w-full h-full rounded-full ring-3 ${colors.ring} object-cover object-top transition-transform duration-300 hover:scale-105`}
-            style={{ boxShadow: `0 0 20px ${teacher.badgeColor === 'purple' ? 'rgba(168,85,247,0.4)' : teacher.badgeColor === 'blue' ? 'rgba(59,130,246,0.4)' : teacher.badgeColor === 'cyan' ? 'rgba(6,182,212,0.4)' : teacher.badgeColor === 'green' ? 'rgba(16,185,129,0.4)' : teacher.badgeColor === 'pink' ? 'rgba(236,72,153,0.4)' : teacher.badgeColor === 'orange' ? 'rgba(249,115,22,0.4)' : teacher.badgeColor === 'violet' ? 'rgba(139,92,246,0.4)' : 'rgba(255,255,255,0.1)'}` }}
+            className={`w-full h-full rounded-full ring-2 ${colors.ring} object-cover object-top`}
+            style={{ boxShadow: `0 0 20px ${glowColor(teacher.badgeColor)}` }}
           />
-          {featured && (
+          {isFeatured && (
             <div className="absolute -top-2 -right-2 w-7 h-7 bg-yellow-500 rounded-full flex items-center justify-center">
               <Star className="w-4 h-4 text-yellow-900 fill-yellow-900" />
             </div>
@@ -46,21 +74,15 @@ function TeacherCard({ teacher, featured = false }: { teacher: Teacher; featured
       </div>
 
       {/* Content */}
-      <div className={`flex-1 ${featured ? '' : 'text-center'}`}>
-        {/* Badge */}
+      <div className="flex-1 text-center">
         <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border mb-3 ${colors.badge}`}>
           {teacher.badge}
         </div>
 
-        <h3 className={`font-bold text-white mb-0.5 ${featured ? 'text-2xl' : 'text-lg'}`}>
-          {teacher.name}
-        </h3>
-        <p className={`font-semibold mb-3 ${colors.text} ${featured ? 'text-base' : 'text-sm'}`}>
-          {teacher.role}
-        </p>
+        <h3 className="font-bold text-white text-lg mb-0.5">{teacher.name}</h3>
+        <p className={`font-semibold text-sm mb-3 ${colors.text}`}>{teacher.role}</p>
 
-        {/* Expertise tags */}
-        <div className={`flex flex-wrap gap-1.5 mb-3 ${featured ? '' : 'justify-center'}`}>
+        <div className="flex flex-wrap gap-1.5 mb-3 justify-center">
           {teacher.expertise.map((tag) => (
             <span key={tag} className={`px-2 py-0.5 rounded-md text-xs font-medium ${colors.bg} ${colors.text}`}>
               {tag}
@@ -68,12 +90,9 @@ function TeacherCard({ teacher, featured = false }: { teacher: Teacher; featured
           ))}
         </div>
 
-        <p className={`text-slate-400 text-sm leading-relaxed mb-4 ${featured ? 'max-w-lg' : ''}`}>
-          {teacher.bio}
-        </p>
+        <p className="text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3">{teacher.bio}</p>
 
-        {/* Actions */}
-        <div className={`flex items-center gap-3 ${featured ? '' : 'justify-center'}`}>
+        <div className="flex items-center gap-3 justify-center">
           {teacher.github && (
             <a
               href={teacher.github}
@@ -103,8 +122,59 @@ function TeacherCard({ teacher, featured = false }: { teacher: Teacher; featured
 }
 
 export default function Teachers() {
-  const featured = teachers.find((t: Teacher) => t.featured)!;
-  const rest = teachers.filter((t: Teacher) => !t.featured);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(1024);
+  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Track container width for responsive card sizing
+  useEffect(() => {
+    const update = () => {
+      if (containerRef.current) setContainerWidth(containerRef.current.offsetWidth);
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
+  // Autoplay
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % teachers.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [isAutoPlaying]);
+
+  // Cleanup resume timer on unmount
+  useEffect(() => {
+    return () => {
+      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    };
+  }, []);
+
+  const cardsPerView = containerWidth < 640 ? 1 : containerWidth < 1024 ? 2 : 3;
+  const gap = 24;
+  const cardWidth = Math.max(280, Math.floor((containerWidth - gap * (cardsPerView - 1)) / cardsPerView));
+  const maxIndex = Math.max(0, teachers.length - cardsPerView);
+  const offset = Math.min(currentIndex, maxIndex) * (cardWidth + gap);
+
+  const pauseTemporarily = () => {
+    setIsAutoPlaying(false);
+    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    resumeTimerRef.current = setTimeout(() => setIsAutoPlaying(true), 5000);
+  };
+
+  const goNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % teachers.length);
+    pauseTemporarily();
+  };
+
+  const goPrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + teachers.length) % teachers.length);
+    pauseTemporarily();
+  };
 
   return (
     <section id="teachers" className="py-20 relative">
@@ -116,7 +186,7 @@ export default function Teachers() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section header */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-purple-500/30 text-purple-300 text-sm font-medium mb-4">
             <Users className="w-4 h-4" />
             Our Team
@@ -124,20 +194,72 @@ export default function Teachers() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4">
             Meet Our <span className="gradient-text">Dream Team</span> 🚀
           </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+          <p className="text-slate-400 text-lg max-w-2xl mx-auto mb-2">
             The passionate experts behind Vyombotics — building the next generation of tech innovators.
           </p>
+          <p className="text-slate-500 text-sm">Swipe to meet the experts → auto-rotating every 3s</p>
         </div>
 
-        {/* Featured: Academic Head */}
-        <div className="mb-8">
-          <TeacherCard teacher={featured} featured />
+        {/* Carousel wrapper */}
+        <div
+          className="relative px-10 sm:px-12"
+          onMouseEnter={() => setIsAutoPlaying(false)}
+          onMouseLeave={() => {
+            if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+            setIsAutoPlaying(true);
+          }}
+        >
+          {/* Prev button */}
+          <button
+            onClick={goPrev}
+            aria-label="Previous teacher"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full glass flex items-center justify-center text-white hover:border-blue-500/50 hover:text-blue-400 hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] transition-all duration-200"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+
+          {/* Track */}
+          <div ref={containerRef} className="overflow-hidden">
+            <div
+              className="flex"
+              style={{
+                gap: `${gap}px`,
+                transform: `translateX(-${offset}px)`,
+                transition: 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+              }}
+            >
+              {teachers.map((teacher) => (
+                <TeacherCard key={teacher.id} teacher={teacher} cardWidth={cardWidth} />
+              ))}
+            </div>
+          </div>
+
+          {/* Next button */}
+          <button
+            onClick={goNext}
+            aria-label="Next teacher"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full glass flex items-center justify-center text-white hover:border-blue-500/50 hover:text-blue-400 hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] transition-all duration-200"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
         </div>
 
-        {/* Rest of team */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {rest.map((teacher: Teacher) => (
-            <TeacherCard key={teacher.id} teacher={teacher} />
+        {/* Dots indicator */}
+        <div className="flex items-center justify-center gap-2 mt-8">
+          {teachers.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                setCurrentIndex(i);
+                pauseTemporarily();
+              }}
+              aria-label={`Go to slide ${i + 1}`}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                i === currentIndex
+                  ? 'w-6 bg-blue-400 shadow-[0_0_8px_rgba(59,130,246,0.8)]'
+                  : 'w-2 bg-white/30 hover:bg-white/50'
+              }`}
+            />
           ))}
         </div>
       </div>

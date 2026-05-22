@@ -28,11 +28,14 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a href="#home" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center glow-blue transition-all duration-300 group-hover:scale-110">
-              <Rocket className="w-5 h-5 text-white" />
+          <a href="#home" className="flex items-center gap-2.5 group">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center glow-blue transition-all duration-300 group-hover:scale-110">
+              <Rocket className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold gradient-text">Vyombotics</span>
+            <div className="relative">
+              <span className="text-2xl md:text-3xl font-black tracking-wide logo-brand-text">Vyombotics</span>
+              <span className="absolute -bottom-0.5 left-0 w-full h-[2px] bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-expand-line" />
+            </div>
           </a>
 
           {/* Desktop nav */}

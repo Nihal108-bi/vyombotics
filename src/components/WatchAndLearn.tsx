@@ -58,45 +58,32 @@ export default function WatchAndLearn() {
         {/* Two-column layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
 
-          {/* LEFT — YouTube channel card */}
-          <div className="glass rounded-2xl p-8 flex flex-col justify-between" style={{
-            background: 'rgba(239,68,68,0.05)',
-            border: '1px solid rgba(239,68,68,0.2)',
-            boxShadow: '0 0 40px rgba(239,68,68,0.08)',
-          }}>
-            <div>
-              {/* YouTube icon + brand */}
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{
-                  background: 'linear-gradient(135deg, #ef4444, #dc2626)',
-                  boxShadow: '0 0 24px rgba(239,68,68,0.4)',
-                }}>
-                  <PlayCircle className="w-9 h-9 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white">Vyombotics on YouTube</h3>
-                  <p className="text-slate-400 text-sm">Free tutorials • Project demos • Tech content</p>
-                </div>
-              </div>
-
-              {/* Channel description */}
-              <div className="space-y-3 mb-8">
-                <div className="flex items-center gap-3 p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <span className="text-2xl">🤖</span>
-                  <span className="text-slate-300 text-sm">Robotics builds, drone projects, automation demos</span>
-                </div>
-                <div className="flex items-center gap-3 p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <span className="text-2xl">🧠</span>
-                  <span className="text-slate-300 text-sm">AI, ML and Python coding walkthroughs</span>
-                </div>
-                <div className="flex items-center gap-3 p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <span className="text-2xl">🚀</span>
-                  <span className="text-slate-300 text-sm">Join our growing community of learners</span>
-                </div>
-              </div>
+          {/* LEFT — Featured video card + YouTube CTA */}
+          <div className="flex flex-col gap-5">
+            {/* Featured video */}
+            <div
+              className="glass rounded-2xl p-6"
+              style={{
+                background: 'rgba(59,130,246,0.04)',
+                border: '1px solid rgba(59,130,246,0.22)',
+                boxShadow: '0 0 40px rgba(59,130,246,0.08)',
+              }}
+            >
+              <h3 className="text-xl font-bold text-white mb-1">
+                Students Explaining Their Projects 🎤
+              </h3>
+              <p className="text-slate-400 text-sm mb-4">
+                See our students in action — building, learning, presenting.
+              </p>
+              <video
+                src="/images/gallary/project_explaination_by_student.mp4"
+                controls
+                className="w-full rounded-2xl border border-white/10"
+                style={{ boxShadow: '0 0 30px rgba(59,130,246,0.2)' }}
+              />
             </div>
 
-            {/* CTA */}
+            {/* YouTube CTA */}
             <a
               href={CHANNEL_URL}
               target="_blank"

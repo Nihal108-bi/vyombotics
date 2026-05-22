@@ -9,6 +9,13 @@ const floatingIcons = [
   { Icon: Globe, style: 'top-[45%] right-[4%]', delay: '2.5s', color: 'text-cyan-300' },
 ];
 
+const galleryImages = [
+  { src: '/images/gallary/Stud_group_img.jpg', label: 'Student Group' },
+  { src: '/images/gallary/student_group_img.jpg', label: 'Learning Together' },
+  { src: '/images/gallary/boy.jpg', label: 'Future Innovator' },
+  { src: '/images/gallary/boy_with_project.jpg', label: 'Project Builder' },
+];
+
 export default function Hero() {
   return (
     <section
@@ -49,7 +56,7 @@ export default function Hero() {
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Content */}
-      <div className="relative z-20 text-center max-w-5xl mx-auto px-4 sm:px-6">
+      <div className="relative z-20 text-center max-w-5xl mx-auto px-4 sm:px-6 w-full">
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-blue-500/30 text-blue-300 text-sm font-medium mb-8">
           <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
@@ -86,8 +93,40 @@ export default function Hero() {
           </button>
         </div>
 
+        {/* Gallery Strip */}
+        <div className="mt-14">
+          <p className="text-center text-white/60 text-xs tracking-widest uppercase mb-5">
+            Real Students. Real Projects. Real Impact. 🚀
+          </p>
+          <div className="marquee-container gallery-mask overflow-hidden">
+            <div className="animate-marquee flex" style={{ width: 'max-content' }}>
+              {[...galleryImages, ...galleryImages].map((img, i) => (
+                <div
+                  key={i}
+                  className="group relative flex-shrink-0 rounded-xl overflow-hidden border border-white/10 hover:border-blue-500/50 hover:shadow-[0_0_18px_rgba(59,130,246,0.35)] transition-all duration-300"
+                  style={{ width: '280px', height: '180px', marginRight: '16px' }}
+                >
+                  <img
+                    src={img.src}
+                    alt={img.label}
+                    className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:brightness-110"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src =
+                        'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=280&h=180&fit=crop';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
+                  <span className="absolute bottom-2 left-3 text-white text-xs font-medium tracking-wide">
+                    {img.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* Scroll indicator */}
-        <div className="mt-16 flex flex-col items-center gap-2 opacity-50">
+        <div className="mt-10 flex flex-col items-center gap-2 opacity-50">
           <div className="w-6 h-10 rounded-full border-2 border-slate-500 flex items-start justify-center pt-2">
             <div className="w-1 h-3 bg-slate-400 rounded-full animate-bounce" />
           </div>
