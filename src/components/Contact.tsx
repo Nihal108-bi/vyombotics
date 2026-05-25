@@ -1,3 +1,9 @@
+/**
+ * @copyright Copyright (c) 2026 Nihal Jaiswal
+ * @author    Nihal Jaiswal
+ * @license   MIT
+ */
+
 import { useState } from 'react';
 import { Mail, ArrowRight, X, PlayCircle, Camera, Briefcase } from 'lucide-react';
 

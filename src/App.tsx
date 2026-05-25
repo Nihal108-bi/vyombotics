@@ -1,3 +1,9 @@
+/**
+ * @copyright Copyright (c) 2026 Nihal Jaiswal
+ * @author    Nihal Jaiswal
+ * @license   MIT
+ */
+
 import './index.css';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';

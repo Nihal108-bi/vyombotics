@@ -1,3 +1,9 @@
+/**
+ * @copyright Copyright (c) 2026 Nihal Jaiswal
+ * @author    Nihal Jaiswal
+ * @license   MIT
+ */
+
 import { Rocket } from 'lucide-react';
 
 export default function Footer() {
@@ -54,7 +60,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-slate-600 text-sm">
-            © 2025 Vyombotics. All rights reserved.
+            © 2026 Vyombotics. All rights reserved.
           </p>
           <p className="text-slate-700 text-xs">
             Built with passion for the future 🚀

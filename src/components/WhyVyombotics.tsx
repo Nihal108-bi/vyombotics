@@ -1,3 +1,9 @@
+/**
+ * @copyright Copyright (c) 2026 Nihal Jaiswal
+ * @author    Nihal Jaiswal
+ * @license   MIT
+ */
+
 import { Hammer, BookMarked, MessageCircle, Award } from 'lucide-react';
 
 const features = [

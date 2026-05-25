@@ -1,3 +1,9 @@
+/**
+ * @copyright Copyright (c) 2026 Nihal Jaiswal
+ * @author    Nihal Jaiswal
+ * @license   MIT
+ */
+
 import { ArrowRight, Star } from 'lucide-react';
 import { courses, type Course } from '../data/courses.ts';
 

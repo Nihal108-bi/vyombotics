@@ -1,3 +1,9 @@
+/**
+ * @copyright Copyright (c) 2026 Nihal Jaiswal
+ * @author    Nihal Jaiswal
+ * @license   MIT
+ */
+
 import { useState, useEffect, useRef } from 'react';
 import { Code2, ExternalLink, Star, Users, ChevronLeft, ChevronRight, Crown } from 'lucide-react';
 import { teachers, type Teacher } from '../data/teachers.ts';

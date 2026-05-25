@@ -1,3 +1,9 @@
+/**
+ * @copyright Copyright (c) 2026 Nihal Jaiswal
+ * @author    Nihal Jaiswal
+ * @license   MIT
+ */
+
 import { Users, BookOpen, GraduationCap, Wrench } from 'lucide-react';
 
 const stats = [

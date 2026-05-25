@@ -1,3 +1,9 @@
+/**
+ * @copyright Copyright (c) 2026 Nihal Jaiswal
+ * @author    Nihal Jaiswal
+ * @license   MIT
+ */
+
 import { PlayCircle, Bot, Brain, Globe, Bell } from 'lucide-react';
 
 const CHANNEL_URL = 'https://youtube.com/@vyombotics';
